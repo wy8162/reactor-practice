@@ -31,6 +31,15 @@ class ReactorSourcesFlatmapTest {
             .log();
 
         flux.subscribe(System.out::println);
+
+        var r = Flux.just(1,2,3)
+            .flatMap(i -> Mono.just(i))
+            .log();
+
+        var r2 = Flux.just(1,2,3)
+            .flatMap(i -> Flux.just(i))
+            .log();
+
     }
 
     @Test
