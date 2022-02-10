@@ -6,8 +6,30 @@ import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.scheduler.Schedulers;
 
+
+/**
+ * publishOn and subscribeOn: hop on different threads.
+ */
 @Slf4j
 public class PublishOnSubscribeOnTest {
+
+    /**
+     * This runs on different thread but there is no parallelism.
+     */
+    @Test
+    void simplePublishOn() {
+        Flux.just(1,2,3,4,5)
+            .publishOn(Schedulers.boundedElastic())
+            .map(i -> {
+                try {
+                    Thread.sleep(1000);
+                } catch (Exception e) {}
+                return i + i;
+            })
+            .log()
+            .doOnNext(System.out::println)
+            .blockLast();
+    }
 
     /**
      * publishOn - impacts all operators down stream.
