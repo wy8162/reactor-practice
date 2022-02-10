@@ -23,6 +23,9 @@ class ReactorSourcesFlatmapTest {
             .verifyComplete();
     }
 
+    /**
+     * Runs in the same main thread.
+     */
     @Test
     void testFlatmap() {
         var flux = sources.getFluxString()
@@ -58,6 +61,11 @@ class ReactorSourcesFlatmapTest {
         Thread.sleep(5000);
     }
 
+    /**
+     * Runs in different threads.
+     *
+     * @throws InterruptedException
+     */
     @Test
     void testCatmapExploringAsync() throws InterruptedException {
         var flux = sources.getFluxString()
@@ -118,6 +126,6 @@ class ReactorSourcesFlatmapTest {
         var delay = new Random().nextInt(1000);
 
         return Flux.fromArray(s.split(""))
-            .delayElements(Duration.ofMillis(delay));
+            .delayElements(Duration.ofMillis(delay)); // This makes it to run in parallel
     }
 }
